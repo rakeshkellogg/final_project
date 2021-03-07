@@ -10,8 +10,11 @@
 </head>
 
 <body>
-  <div class="sign-in-or-sign-out"></div>
- 
+
+  <!-- by initializing firebase, we'll get the new user's name and email right away. everyone can see the same homepage and click the button most relevant to them -->
+
+  <div class="sign-in-or-sign-out"></div> 
+
   <!-- Put the Firebase config here -->
   <!-- The core Firebase JS SDK is always required and must be listed first -->
   <script src="https://www.gstatic.com/firebasejs/8.2.7/firebase-app.js"></script>
@@ -26,6 +29,55 @@
     firebase.initializeApp(firebaseConfig);
   </script>
   <script src="index.js"></script>
+
+
+
+
+ 
+  <!-- pasting code from week 2 below in order to get our homepage started (I added some comments about how our flow can work) -->
+
+    <h1 class="text-center font-bold text-2xl m-8 text-purple-500 uppercase">Welcome to Homies</h1>
+  
+    <div class="px-16 md:flex bg-gray-100">
+      <div class="md:p-16 md:w-1/2">
+        <img class="rounded-xl" src="https://decoholic.org/wp-content/uploads/2015/08/small-white-living-room-720x541.jpg">
+      </div>
+  
+      <!-- we'll include a description of our app/services/vision - this needs to be updated from the class example -->
+      <div class="md:p-16 md:w-1/2 space-y-4">
+        <h2 class="font-bold text-xl">It's Chic.</h2>
+        <p>It's more chic than <a href="http://google.com/">the Devil Wears Prada.</a></p>
+  
+        <h2 class="font-bold text-xl">It's Life-Changing.</h2>
+        <p>You'll wonder how you lived without it??</p>
+  
+        <h2 class="font-bold text-xl">It's *not* Free.</h2>
+        <p>In fact, we'll pay you *not true*.</p>
+      </div>
+    </div>
+  
+    <!-- here we can have an "Existing user" button which sends logged-in users directly to their profile page -->
+    <div class="m=8">
+      <h1 class="text-center font-bold text-2xl m-8">Already part of our design community? View your profile now!</h1>
+      <button class="block mt-4 bg-gray-500 text-white px-4 py-2 rounded">View my profile!</button>
+    </div>
+
+    <!-- here we can have a button for designers to create a profile and design-seekers to submit their design request -->
+    <div class="m=8">
+      <h1 class="text-center font-bold text-2xl m-8">Interested in joining our design community? Sign-up now!</h1>
+
+      <button class="block mt-4 bg-gray-500 text-white px-4 py-2 rounded">I'm a designer!</button>
+      <button class="block mt-4 bg-gray-500 text-white px-4 py-2 rounded">I'm looking for design advice!</button>
+
+      <!-- clicking one of the 3 buttons above kicks off a lambda function where we do one of 3 things 1. display existing profile, 2. gather the new designers portfolio info, or 3. collect the design-seekers project details  -->
+      <!-- the above flow covers the first 5 wireframe tiles from the wireframe we submitted to Ben -->
+     
+    </div>
+
+  <!-- ^^^ end pasting code from week 2 in order to get our homepage started ^^^ -->
+  
 </body>
 
 </html>
+
+ <!-- see updated wireframe ideas in slack for more about the lambda funtion! like Rakesh said, i think we can minimize the number of webpages we need to create -->
