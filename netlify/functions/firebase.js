@@ -9,7 +9,7 @@ const firebaseConfig = {
     messagingSenderId: "895011058032",
     appId: "1:895011058032:web:101efae9adb7e3a7ecdfb5",
     measurementId: "G-PM7Z2L5KMY"
-} // replace
+} // replace test test
 
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig)
