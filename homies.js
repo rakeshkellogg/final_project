@@ -16,7 +16,7 @@ firebase.auth().onAuthStateChanged(async function(user) {
     // Listen for the form submit and create/render the new post
     document.querySelector('form').addEventListener('submit', async function(event) {
       event.preventDefault()
-      // we want to capture the userId, projectUsername, projectID, projectDesc
+      // we want to capture the userId, projectUsername, projectID, projectDesc. I left all variables the same for now, EXCEPT, i got rid of "imageUrl" and replaced it with "projectDesc" because users will submit a written project description rather than an image, as they did in Kelloggram
       let projectUsername = user.displayName
       let projectDesc = document.querySelector('#project-desc').value
       let response = await fetch('/.netlify/functions/create_post', {
@@ -75,6 +75,9 @@ firebase.auth().onAuthStateChanged(async function(user) {
 // }
 async function renderPost(post) {
   let postId = post.id
+  
+
+  // setup a table in the html below so that the like button displays next to the comments. we still need to figure out how to add more like buttons and to associate one with each comment rather than just showing one like button per post. In the "comments" code below, i found out how to grab the comment ID, and i think we need to incorporate that into this html so that the likes get attached to a commentId rather than a postId
   document.querySelector('.posts').insertAdjacentHTML('beforeend', `
     <div class="post-${postId} md:mt-16 mt-8 space-y-8">
       <div class="md:mx-0 mx-4">
@@ -106,7 +109,7 @@ async function renderPost(post) {
   let likeButton = document.querySelector(`.post-${postId} .like-button`)
   likeButton.addEventListener('click', async function(event) {
     event.preventDefault()
-    console.log(`post ${postId} like button clicked!`)
+    console.log(`comment ${postId} like button clicked!`)
     let currentUserId = firebase.auth().currentUser.uid
 
     let response = await fetch('/.netlify/functions/like', {
@@ -138,17 +141,24 @@ async function renderPost(post) {
     let newComment = {
       postId: postId,
       username: firebase.auth().currentUser.displayName,
-      text: newCommentText
+      text: newCommentText,
     }
 
     // call our back-end lambda using the new comment's data
-    await fetch('/.netlify/functions/create_comment', {
+    let commentResponse = await fetch('/.netlify/functions/create_comment', {
       method: 'POST',
       body: JSON.stringify(newComment)
+      
     })
 
+    //capture the comment id, which will be used to associate the likes to the comments -- need to figure out how to associate the likes to the comment instead of the post. We want a heart button next to each comment.
+    console.log(newComment.text)
+    let comment = await commentResponse.json()
+    commentId = comment.id
+    console.log(comment.id)
+
     // insert the new comment into the DOM, in the div with the class name "comments", for this post
-    let commentsElement = document.querySelector(`.post-${postId} .comments`)
+    let commentsElement = document.querySelector(`.post-${postId} .comments-${commentId}`)
     commentsElement.insertAdjacentHTML('beforeend', renderComment(newComment))
 
     // clears the comment input
@@ -162,6 +172,7 @@ function renderComments(comments) {
     let markup = ''
     for (let i = 0; i < comments.length; i++) {
       markup += renderComment(comments[i])
+      //console.log(commentId)
     }
     return markup
   } else {
@@ -171,7 +182,7 @@ function renderComments(comments) {
 
 // return the HTML for one comment, given a single comment Object
 function renderComment(comment) {
-  return `<div><strong>${comment.username}</strong> ${comment.text}</div>`
+  return `<div><strong>${comment.username}</strong> ${comment.text} ${comment.id}</div>`
 }
 
 // return the HTML for the new comment form
