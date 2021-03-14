@@ -16,18 +16,19 @@ firebase.auth().onAuthStateChanged(async function(user) {
     // Listen for the form submit and create/render the new post
     document.querySelector('form').addEventListener('submit', async function(event) {
       event.preventDefault()
-      let postUsername = user.displayName
-      let postImageUrl = document.querySelector('#image-url').value
+      // we want to capture the userId, projectUsername, projectID, projectDesc
+      let projectUsername = user.displayName
+      let projectDesc = document.querySelector('#project-desc').value
       let response = await fetch('/.netlify/functions/create_post', {
         method: 'POST',
         body: JSON.stringify({
           userId: user.uid,
-          username: postUsername,
-          imageUrl: postImageUrl
+          username: projectUsername,
+          projectDesc: projectDesc
         })
       })
       let post = await response.json()
-      document.querySelector('#image-url').value = '' // clear the image url field
+      document.querySelector('#project-desc').value = '' // clear the image url field
       renderPost(post)
     })
 
@@ -80,18 +81,20 @@ async function renderPost(post) {
         <span class="font-bold text-xl">${post.username}</span>
       </div>
 
-      <div>
-        <img src="${post.imageUrl}" class="w-full">
-      </div>
-
-      <div class="text-3xl md:mx-0 mx-4">
-        <button class="like-button">❤️</button>
-        <span class="likes">${post.likes}</span>
+      <div class="w-full">
+        ${post.projectDesc}
       </div>
 
       <div class="comments text-sm md:mx-0 mx-4 space-y-2">
-        ${renderComments(post.comments)}
+        <table>
+          <tr>
+            <td>${renderComments(post.comments)}</td>
+            <td><button class="like-button">❤️</button></td>
+            <td><span class="likes">${post.likes}</span></td>
+        </table>
       </div>
+
+      
 
       <div class="w-full md:mx-0 mx-4">
         ${renderCommentForm()}

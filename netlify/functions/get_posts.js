@@ -35,7 +35,7 @@ exports.handler = async function(event) {
     // add a new Object of our own creation to the postsData Array
     postsData.push({
       id: postId,                                           // the post ID
-      imageUrl: postData.imageUrl,                          // the image URL
+      projectDesc: postData.projectDesc,                          // the image URL
       username: postData.username,                          // the username
       likes: likesQuery.size,                               // number of likes
       comments: commentsData                                // an Array of comments

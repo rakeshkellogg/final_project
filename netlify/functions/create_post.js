@@ -6,15 +6,15 @@ exports.handler = async function(event) {
   let body = JSON.parse(event.body)
   let userId = body.userId
   let username = body.username
-  let imageUrl = body.imageUrl
+  let projectDesc = body.projectDesc
   
   console.log(`user: ${userId}`)
-  console.log(`imageUrl: ${imageUrl}`)
+  console.log(`projectDesc: ${projectDesc}`)
 
   let newPost = { 
     userId: userId,
     username: username, 
-    imageUrl: imageUrl, 
+    projectDesc: projectDesc, 
     created: firebase.firestore.FieldValue.serverTimestamp()
   }
 
